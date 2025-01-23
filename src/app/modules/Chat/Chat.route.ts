@@ -12,12 +12,15 @@ router.post(
   // auth(USER_ROLE.ADMIN), // Authorization middleware
   FileUploadHelper.upload.single('file'), // Single file uploads
   (req: Request, res: Response, next: NextFunction) => {
-    req.body = productValidations.addProductValidationSchema.parse(
-      JSON.parse(req.body.data),
-    );
+    console.log('before data add new chat -> ', req.body);
+    console.log('before data add new file -> ', req.file);
+    // req.body = productValidations.addProductValidationSchema.parse(
+    //   JSON.parse(req.body.data),
+    // );
+    console.log(JSON.parse(req.body.data))
     return ChatController.addNewChat(req, res, next);
   },
-  validateRequest(productValidations.addProductValidationSchema),
+  // validateRequest(productValidations.addProductValidationSchema),
   ChatController.addNewChat,
 );
 

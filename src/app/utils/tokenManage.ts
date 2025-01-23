@@ -1,4 +1,4 @@
-import jwt, { JwtPayload, Secret } from 'jsonwebtoken';
+import jwt, { JwtPayload, Secret, Algorithm } from 'jsonwebtoken';
 import AppError from '../error/AppError';
 import httpStatus from 'http-status';
 
@@ -11,6 +11,7 @@ interface CreateTokenParams {
 interface VerifyTokenParams {
   token: string;
   access_secret: string;
+  algorithms?: Algorithm[];
 }
 
 const createToken = ({
@@ -28,9 +29,10 @@ const createToken = ({
 const verifyToken = ({
   token,
   access_secret,
+  algorithms = ['HS256'],
 }: VerifyTokenParams): JwtPayload => {
   try {
-    return jwt.verify(token, access_secret) as JwtPayload;
+    return jwt.verify(token, access_secret, { algorithms }) as JwtPayload;
   } catch (err) {
     console.error('JWT verification failed:', err);
     throw new AppError(httpStatus.FORBIDDEN, 'You are not authorized!');

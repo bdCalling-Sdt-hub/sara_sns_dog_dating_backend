@@ -10,7 +10,7 @@ const router = express.Router();
 
 router.post(
   '/add',
-  // auth(USER_ROLE.ADMIN), // Authorization middleware
+  auth(USER_ROLE.ADMIN), // Authorization middleware
   FileUploadHelper.upload.single('file'), // Single file uploads
   (req: Request, res: Response, next: NextFunction) => {
     req.body = productValidations.addProductValidationSchema.parse(
@@ -28,6 +28,7 @@ router.get('/:id', ProductController.getProductById);
 
 router.patch(
   '/:id',
+  auth(USER_ROLE.ADMIN),
   FileUploadHelper.upload.single('file'), // Single file uploads
   (req: Request, res: Response, next: NextFunction) => {
     req.body = productValidations.updateProductValidationSchema.parse(
@@ -41,7 +42,7 @@ router.patch(
 
 router.delete(
   '/:id',
-  // auth(USER_ROLE.ADMIN), // Authorization middleware
+  auth(USER_ROLE.ADMIN), // Authorization middleware
   ProductController.deleteProduct,
 );
 

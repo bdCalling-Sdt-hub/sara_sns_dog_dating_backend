@@ -24,6 +24,8 @@ router.post(
 );
 
 router.get('/full-chat/:chatId', MessageController.GetChatMessages);
+
+
 router.patch('/read', MessageController.ReadAllMessages);
 
 export const MessageRoutes = router;

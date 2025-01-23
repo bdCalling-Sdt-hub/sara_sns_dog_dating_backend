@@ -5,8 +5,13 @@ import sendResponse from '../../utils/sendResponse';
 import { ChatService } from './Chat.service';
 
 const addNewChat = catchAsync(async (req: Request, res: Response) => {
-  const UserProfileData = req.body;
+
+
+  console.log("req body -> ",req.body)
+  const UserProfileData = JSON.parse(req.body.data);
+  console.log({UserProfileData})
   const file = req?.file as Express.Multer.File;
+  console.log({file})
   const result = await ChatService.addNewChat(file, UserProfileData);
   sendResponse(res, {
     statusCode: httpStatus.CREATED,
@@ -15,6 +20,8 @@ const addNewChat = catchAsync(async (req: Request, res: Response) => {
     data: result,
   });
 });
+
+
 const updateChatById = catchAsync(async (req: Request, res: Response) => {
   const UserProfileData = req.body;
   const file = req?.file as Express.Multer.File;

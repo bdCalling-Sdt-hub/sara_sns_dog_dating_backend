@@ -11,7 +11,7 @@ router.post('/login', authControllers.login);
 
 router.post(
   '/refresh-token',
-  validateRequest(authValidation.refreshTokenValidationSchema),
+  // validateRequest(authValidation.refreshTokenValidationSchema),
   authControllers.refreshToken,
 );
 router.post(
@@ -27,7 +27,7 @@ router.patch(
 
 router.patch(
   '/forgot-password-otp-match',
-  // validateRequest(authValidation.otpMatchValidationSchema),
+  validateRequest(authValidation.otpMatchValidationSchema),
   authControllers.forgotPasswordOtpMatch,
 );
 router.patch(

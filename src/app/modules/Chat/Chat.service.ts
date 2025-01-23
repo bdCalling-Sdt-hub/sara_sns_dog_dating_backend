@@ -33,9 +33,9 @@ const addNewChat = async (
     const imageUrl = file.path.replace('public\\', '');
     data.groupProfilePicture = imageUrl;
 
-    if (!data?.groupBio) {
-      throw new Error('Group Bio is required');
-    }
+    // if (!data?.groupBio) {
+    //   throw new Error('Group Bio is required');
+    // }
 
     if (!data?.groupAdmins || data.groupAdmins.length === 0) {
       throw new Error('Group Admins are required');
@@ -88,6 +88,8 @@ const updateUnreadCounts = async (
     { new: true },
   );
 };
+
+
 const updateChatById = async (
   chatId: string,
   file: Express.Multer.File,

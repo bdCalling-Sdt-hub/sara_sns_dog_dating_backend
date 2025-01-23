@@ -14,6 +14,8 @@ import { SettingsRoutes } from '../modules/settings/settings.routes';
 import { ShelterRoutes } from '../modules/Shelter/Shelter.route';
 import { userRoutes } from '../modules/user/user.route';
 import { UserProfileRoutes } from '../modules/UserProfile/UserProfile.route';
+import { supportRoutes } from '../modules/Support/support.route';
+
 // import { ProductsRoutes } from '../modules/Product/Product.route';
 // import { ShelterRoutes } from '../modules/Shelter/Shelter.route';
 // import { DonationRoutes } from '../modules/Donation/Donation.route';
@@ -80,6 +82,10 @@ const moduleRoutes = [
   {
     path: '/message',
     route: MessageRoutes,
+  },
+  {
+    path: '/contactUs',
+    route: supportRoutes,
   },
 ];
 moduleRoutes.forEach((route) => router.use(route.path, route.route));

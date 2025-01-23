@@ -29,6 +29,8 @@ const storage = multer.diskStorage({
   },
 });
 
+// console.log({storage})
+
 // Multer middleware for single and multiple file uploads
 const upload = multer({ storage: storage });
 
@@ -100,6 +102,7 @@ const upload = multer({ storage: storage });
 
 //   return Promise.all(uploadPromises); // Wait for all uploads to complete
 // };
+// console.log({upload})
 export const FileUploadHelper = {
   upload, // Multer middleware
   // uploadToCloudinary, // Single file upload
