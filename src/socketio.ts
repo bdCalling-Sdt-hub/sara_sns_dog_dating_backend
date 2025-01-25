@@ -8,6 +8,7 @@ import getUserDetailsFromToken from './app/helpers/getUserDetailsFromToken';
 import { Chat } from './app/modules/Chat/Chat.models';
 import { Message } from './app/modules/Message/Message.models';
 import { User } from './app/modules/user/user.models';
+import { PetProfile } from './app/modules/PetProfile/PetProfile.models';
 
 async function getChatById(chatId: string) {
 
@@ -107,12 +108,6 @@ const initializeSocketIO = (server: HttpServer) => {
 
         socket.on('send-new-message', async (message) => {
           console.log('new message ====>', { message });
-          // message?.chat?.users?.forEach((user: any) => {
-          //   console.log({ user });
-          //   io.to(user._id).emit('new-message-received', message);
-          // });
-
-          // console.log('check maren vai doya koirra', message?.chat);
 
           try {
             // Assuming `getChatById` fetches the chat object including the users array
@@ -125,18 +120,28 @@ const initializeSocketIO = (server: HttpServer) => {
             if (chat) {
               newMessage = await Message.create(message);
               console.log({ newMessage });
+
+              if(message?.sender === null){
+
+              }
+              else{
                userData = await User.findById(message?.sender).select('image fullName' );
                await Chat.findByIdAndUpdate(message.chat, {
                  lastMessage: newMessage._id,
                });
+              }
               console.log({userData})
             }
             // console.log(message?.chat);
             const chatId = message?.chat;
             console.log({...message, userData});
+      
+            const petProfileData = await PetProfile.findOne({ userId: message?.sender});
 
-            message.name = userData?.fullName;
-            message.image = userData?.image;
+            console.log({petProfileData})
+
+            message.name = petProfileData?.name;
+            message.image = petProfileData?.image;
 
             console.log({message})
             
@@ -146,25 +151,18 @@ const initializeSocketIO = (server: HttpServer) => {
               .to(chatId)
               .emit(`new-message-received::${message?.chat}`, message);
             socket.emit(`new-message-received::${message?.chat}`, message);
-
-            // await chat.users.forEach((user) => {
-            //   console.log(newMessage, ' new message for receiver');
-            //   // io.to(user._id).emit('new-message-received', newMessage);
-            //   socket.emit(`new-message-received::${message.chat}`, newMessage);
-            // });
-            // // Now you can loop through the users and emit to each
-            // chat.users.forEach((user) => {
-            //   console.log('Emitting to user:', user._id);
-            //   io.to(user._id).emit('new-message-received', message);
-            // });
           } catch (error) {
             console.error('Error fetching chat details:', error);
           }
         });
 
         // Leave a chat room
-        socket.on('leave', (chatId) => {
+        socket.on('leave', (chatId, callback) => {
           console.log(`${socket.id} left room ${chatId}`);
+
+          socket
+            .to(chatId)
+            .emit(`leave::${chatId}`, `${user.name} leave from  this chat...`);
           socket.leave(chatId);
         });
 

@@ -1,8 +1,8 @@
 import express, { NextFunction, Request, Response } from 'express';
 import { FileUploadHelper } from '../../helpers/fileUploadHelpers';
-import validateRequest from '../../middleware/validateRequest';
+import auth from '../../middleware/auth';
+import { USER_ROLE } from '../user/user.constants';
 import { ChatController } from './Chat.controller';
-import { productValidations } from './Chat.validation';
 
 const router = express.Router();
 
@@ -17,11 +17,17 @@ router.post(
     // req.body = productValidations.addProductValidationSchema.parse(
     //   JSON.parse(req.body.data),
     // );
-    console.log(JSON.parse(req.body.data))
+    console.log(JSON.parse(req.body.data));
     return ChatController.addNewChat(req, res, next);
   },
   // validateRequest(productValidations.addProductValidationSchema),
   ChatController.addNewChat,
+);
+
+router.patch(
+  '/leave-chat/:chatId',
+  auth(USER_ROLE.USER, USER_ROLE.ADMIN),
+  ChatController.leaveUserFromSpecificChatController,
 );
 
 // Get all chats for a user
@@ -40,8 +46,6 @@ router.get('/:id', (req: Request, res: Response, next: NextFunction) => {
 router.patch('/:id', (req: Request, res: Response, next: NextFunction) => {
   return ChatController.updateChatById(req, res, next);
 });
-
-
 
 // Update unread counts
 router.patch(

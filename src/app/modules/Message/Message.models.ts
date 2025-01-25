@@ -16,7 +16,7 @@ const messageSchema = new Schema<TMessage, MessageModel>(
     sender: {
       type: Schema.Types.ObjectId,
       ref: 'User', // Reference to User model
-      required: true,
+      required: false,
     },
     text: {
       type: String,

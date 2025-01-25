@@ -3,15 +3,14 @@ import httpStatus from 'http-status';
 import catchAsync from '../../utils/catchAsync';
 import sendResponse from '../../utils/sendResponse';
 import { ChatService } from './Chat.service';
+import { PetProfile } from '../PetProfile/PetProfile.models';
 
 const addNewChat = catchAsync(async (req: Request, res: Response) => {
-
-
-  console.log("req body -> ",req.body)
+  console.log('req body -> ', req.body);
   const UserProfileData = JSON.parse(req.body.data);
-  console.log({UserProfileData})
+  console.log({ UserProfileData });
   const file = req?.file as Express.Multer.File;
-  console.log({file})
+  console.log({ file });
   const result = await ChatService.addNewChat(file, UserProfileData);
   sendResponse(res, {
     statusCode: httpStatus.CREATED,
@@ -21,6 +20,29 @@ const addNewChat = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
+const leaveUserFromSpecificChatController = catchAsync(
+  async (req: Request, res: Response) => {
+    const { chatId } = req.params;
+    const userId = req.user.userId;
+
+    console.log('req user = > ', req.user);
+    const payload = {
+      chatId,
+      userId
+    }
+
+    const PetProfileData = await PetProfile.findOne({userId}).select("name")
+    
+    console.log({payload})
+    const result = await ChatService.leaveUserFromSpecific(payload);
+    sendResponse(res, {
+      statusCode: httpStatus.CREATED,
+      success: true,
+      message: `${PetProfileData?.name} has leave the chat...`,
+      data: result,
+    });
+  },
+);
 
 const updateChatById = catchAsync(async (req: Request, res: Response) => {
   const UserProfileData = req.body;
@@ -103,9 +125,10 @@ const deleteChat = async (req: Request, res: Response, next: NextFunction) => {
 
 export const ChatController = {
   addNewChat,
+  leaveUserFromSpecificChatController,
   getUserChats,
   getChatById,
   updateUnreadCounts,
   deleteChat,
-  updateChatById
+  updateChatById,
 };
