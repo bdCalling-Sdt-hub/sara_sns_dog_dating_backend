@@ -6,7 +6,8 @@ import { NearFriendService } from './NearFriend.service';
 
 const nearFriends = catchAsync(async (req: Request, res: Response) => {
   const { id } = req.params;
-  const Shelter = await NearFriendService.nearFriends(id);
+  // const Shelter = await NearFriendService.nearFriends(id);
+  const Shelter = await NearFriendService.nearFriends(id,req.query);
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
