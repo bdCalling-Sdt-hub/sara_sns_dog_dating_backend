@@ -63,6 +63,21 @@ class QueryBuilder<T> {
     this.modelQuery = this.modelQuery.select(fields);
     return this;
   }
+
+  geoWithin(field: string, coordinates: [number, number], radiusInKm: number) {
+    const radiusInRadians = radiusInKm / 6371; // Earth's radius in kilometers
+    if (coordinates?.length === 2) {
+      this.modelQuery = this.modelQuery.find({
+        [field]: {
+          $geoWithin: {
+            $centerSphere: [coordinates, radiusInRadians],
+          },
+        },
+      });
+    }
+    return this;
+  }
+
   async countTotal() {
     const totalQueries = this.modelQuery.getFilter();
     const total = await this.modelQuery.model.countDocuments(totalQueries);
