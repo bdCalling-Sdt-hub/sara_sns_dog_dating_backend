@@ -1,6 +1,5 @@
 import QueryBuilder from '../../builder/QueryBuilder';
 
-import { unlink } from 'fs/promises';
 import httpStatus from 'http-status';
 import AppError from '../../error/AppError';
 import { User } from '../user/user.models';
@@ -45,9 +44,9 @@ const addNew = async (
   const result = await PetProfile.create(data);
 
   // If the pet profile creation fails, delete the uploaded image
-  if (!result) {
-    unlink(`public/${data?.image}`);
-  }
+  // if (!result) {
+  //   unlink(`public/${data?.image}`);
+  // }
 
   const updateResult = await UserProfile.findOneAndUpdate(
     { userId: data.userId },
@@ -105,9 +104,9 @@ const updateById = async (
     runValidators: true,
   });
 
-  if (result) {
-    unlink(`public/${previousImage?.image}`);
-  }
+  // if (result) {
+  //   unlink(`public/${previousImage?.image}`);
+  // }
   return result;
 };
 
@@ -116,9 +115,9 @@ const updateById = async (
  */
 const deleteById = async (id: string): Promise<TPetProfile | null> => {
   const result = await PetProfile.findByIdAndDelete(id);
-  if (result) {
-    unlink(`public/${result.image}`);
-  }
+  // if (result) {
+  //   unlink(`public/${result.image}`);
+  // }
   return result;
 };
 

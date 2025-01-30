@@ -5,9 +5,9 @@ import parseData from '../../middleware/parseData';
 import validateRequest from '../../middleware/validateRequest';
 import { resentOtpValidations } from '../otp/otp.validation';
 import { USER_ROLE } from './user.constants';
-import { userValidation } from './user.validation';
 import { userController } from './user.controller';
-const upload = fileUpload('./public/uploads/profile');
+import { userValidation } from './user.validation';
+const upload = fileUpload('../../../public/uploads/profile');
 
 export const userRoutes = Router();
 
