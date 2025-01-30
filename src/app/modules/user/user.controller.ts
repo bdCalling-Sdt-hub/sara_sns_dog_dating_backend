@@ -101,6 +101,7 @@ const getMyProfile = catchAsync(async (req: Request, res: Response) => {
 });
 
 const updateMyProfile = catchAsync(async (req: Request, res: Response) => {
+  
   if (req?.file) {
     req.body.image = storeFile('profile', req?.file?.filename);
   }

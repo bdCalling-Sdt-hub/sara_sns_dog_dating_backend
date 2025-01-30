@@ -1,6 +1,5 @@
 import QueryBuilder from '../../builder/QueryBuilder';
 
-import { unlink } from 'fs/promises';
 import {
   shelterFilterableFields,
   shelterSearchableFields,
@@ -19,9 +18,9 @@ const addNew = async (
   data.image = ImageUrl;
   const result = await Shelter.create(data);
 
-  if (!result) {
-    unlink(`public/${data?.image}`);
-  }
+  // if (!result) {
+  //   unlink(`public/${data?.image}`);
+  // }
   return result;
 };
 
@@ -67,9 +66,9 @@ const updateById = async (
     runValidators: true,
   });
 
-  if (file && product) {
-    unlink(`public/${previousImage?.image}`);
-  }
+  // if (file && product) {
+  //   unlink(`public/${previousImage?.image}`);
+  // }
 
   return product;
 };
@@ -79,9 +78,9 @@ const updateById = async (
  */
 const deleteById = async (id: string): Promise<TShelter | null> => {
   const product = await Shelter.findByIdAndDelete(id);
-  if (product) {
-    unlink(`public/${product.image}`);
-  }
+  // if (product) {
+  //   unlink(`public/${product.image}`);
+  // }
   return product;
 };
 

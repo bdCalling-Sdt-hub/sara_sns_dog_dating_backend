@@ -1,15 +1,10 @@
-import httpStatus from 'http-status';
-import mongoose from 'mongoose';
 import QueryBuilder from '../../builder/QueryBuilder';
-import AppError from '../../error/AppError';
-import { FileUploadHelper } from '../../helpers/fileUploadHelpers';
-import { TProduct } from './Product.interface';
-import { Product } from './Product.models';
 import {
   productFilterableFields,
   productSearchableFields,
 } from './Product.constants';
-import { unlink } from 'fs/promises';
+import { TProduct } from './Product.interface';
+import { Product } from './Product.models';
 
 /**
  * Add new product(s) with sequential product IDs.
@@ -22,9 +17,9 @@ const addNewProduct = async (
   data.image = ImageUrl;
   const result = await Product.create(data);
 
-  if (!result) {
-    unlink(`public/${data?.image}`);
-  }
+  // if (!result) {
+  //   unlink(`public/${data?.image}`);
+  // }
   return result;
 };
 
@@ -71,9 +66,9 @@ const updateProduct = async (
     runValidators: true,
   });
 
-  if (file && product) {
-    unlink(`public/${previousImage?.image}`);
-  }
+  // if (file && product) {
+  //   unlink(`public/${previousImage?.image}`);
+  // }
 
   if (file) {
   }
@@ -85,9 +80,9 @@ const updateProduct = async (
  */
 const deleteProduct = async (id: string): Promise<TProduct | null> => {
   const product = await Product.findByIdAndDelete(id);
-  if (product) {
-    unlink(`public/${product.image}`);
-  }
+  // if (product) {
+  //   unlink(`public/${product.image}`);
+  // }
   return product;
 };
 

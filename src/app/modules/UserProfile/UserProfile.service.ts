@@ -1,6 +1,5 @@
 import QueryBuilder from '../../builder/QueryBuilder';
 
-import { unlink } from 'fs/promises';
 import httpStatus from 'http-status';
 import AppError from '../../error/AppError';
 import { User } from '../user/user.models';
@@ -34,9 +33,9 @@ const addNew = async (
   data.image = ImageUrl;
   const result = await UserProfile.create(data);
 
-  if (!result) {
-    unlink(`public/${data?.image}`);
-  }
+  // if (!result) {
+  //   unlink(`public/${data?.image}`);
+  // }
 
   await User.findByIdAndUpdate(data.userId, { image: result.image });
 
@@ -94,9 +93,9 @@ const updateById = async (
     runValidators: true,
   });
 
-  if (file && result) {
-    unlink(`public/${previousImage?.image}`);
-  }
+  // if (file && result) {
+  //   unlink(`public/${previousImage?.image}`);
+  // }
 
   // if (result?.userId && result?.location) {
   //   await User.findByIdAndUpdate(result.userId, {
@@ -114,9 +113,9 @@ const updateById = async (
  */
 const deleteById = async (id: string): Promise<TUserProfile | null> => {
   const result = await UserProfile.findByIdAndDelete(id);
-  if (result) {
-    unlink(`public/${result.image}`);
-  }
+  // if (result) {
+  //   unlink(`public/${result.image}`);
+  // }
   return result;
 };
 
